@@ -1,7 +1,19 @@
 function result = my_tmul(Tensor, Matrix, k)
-%Takes a matrix and a tensor and performs their k-mode multiplication
+% Takes a matrix and a tensor and performs their k-mode multiplication
 sizes_tensor = size(Tensor);
 sizes_matrix = size(Matrix);
+
+% matrix*vector
+temp = size(sizes_tensor);
+if (sizes_matrix(2) == 1) & (temp(2) == 2) & (k == 3) % M is a vector and T only has 2 orders
+    result = zeros(sizes_tensor(1),sizes_tensor(2),sizes_matrix(1));
+    for i = 1:sizes_matrix(1)
+        result(:,:,i) = Tensor * Matrix(i);
+    end
+    return
+end
+
+% bad sizes
 if sizes_matrix(2) ~= sizes_tensor(k)
     disp("error during matrix-tensor multiplication");
     result = zeros(sizes_tensor);
