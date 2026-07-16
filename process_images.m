@@ -17,10 +17,10 @@ for i = 1:size_people
         % They are unsorted
         chosen_emotions = randperm(size_emotion,size_emotion);
     else
-        chosen_emotions = 1:size_emotion;
+        chosen_emotions = [4,5,6,11,12,13,14];
     end
 
-    for j = size_emotion
+    for j = 1:size(chosen_emotions,2)
         img_name = "datasets/FEI_face_database/combined/" + num2str(chosen_people(i)) + "-" + num2str(chosen_emotions(j),'%02d') + ".jpg";
         img = imread(img_name);
         mod_img = rgb2gray(imresize(img,resize_param)); % to gray scale and to smaller size
