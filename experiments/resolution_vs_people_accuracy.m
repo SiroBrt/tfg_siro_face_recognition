@@ -4,15 +4,15 @@
 clear;clc;
 
 img_proportions = [3,4];
-resolution_multipliers = 1:15;
-peoples = 2:2:30;
-tries = 20;
-accuracies = zeros(length(resolution_multipliers),length(peoples));
+resolution_multipliers = 1:2;
+peoples = 2:2:4;
+tries = 2;
+successes = zeros(length(resolution_multipliers),length(peoples));
 
 
 for i = 1:length(resolution_multipliers)
     for j = 1:length(peoples)
-        successes = 0;
+        fail = 0;
         resolution = img_proportions * resolution_multipliers(i);
         try
 
@@ -31,17 +31,17 @@ for i = 1:length(resolution_multipliers)
                 T = process_images(resolution,chosen_people,emotions,true);
                 [p,~] = classify(T,z);
                 if p == chosen_p
-                    successes = successes + 1;
                     fprintf("✓")
                 else
                     fprintf("x")
+                    fail = fail + 1;
                 end
             end
 
         catch
-            successes = 0;
+            fail = 0;
         end
-        accuracies(i,j) = successes/tries;
+        successes(i,j) = tries-fail;
         fprintf(" ")
     end
     fprintf("\n")
@@ -50,4 +50,16 @@ end
 
 
 figure
-mesh(accuracies)
+%mesh(successes)
+fileID = fopen('data/resolution_vs_people_accuracy.csv','a+');
+%fprintf(fileID, "people, resolution, tries, successes\n");
+for i = 1:length(resolution_multipliers)
+    for j = 1:length(peoples)
+        fprintf(fileID, "%i, %ix%i, %i, %i\n", ...
+            peoples(j), ...
+            resolution_multipliers(i)*img_proportions(1), ...
+            resolution_multipliers(i)*img_proportions(2), ...
+            tries, ...
+            successes(i,j));
+    end
+end
