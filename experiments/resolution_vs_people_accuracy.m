@@ -4,15 +4,18 @@
 clear;clc;
 
 img_proportions = [3,4];
-resolution_multipliers = 1:2;
-peoples = 2:2:4;
-tries = 2;
-successes = zeros(length(resolution_multipliers),length(peoples));
+resolution_multipliers = 1:15;
+peoples = 2:2:10;
+tries = 20;
+%successes = zeros(length(resolution_multipliers),length(peoples));
+
+Tabla = table(Size=[0,4],VariableTypes=["string", "string", "double", "double"]);
+Tabla.Properties.VariableNames = ["resolution","people","tries","successes"];
 
 
 for i = 1:length(resolution_multipliers)
     for j = 1:length(peoples)
-        fail = 0;
+        successes = 0;
         resolution = img_proportions * resolution_multipliers(i);
         try
 
@@ -32,34 +35,24 @@ for i = 1:length(resolution_multipliers)
                 [p,~] = classify(T,z);
                 if p == chosen_p
                     fprintf("✓")
+                    successes = successes + 1;
                 else
                     fprintf("x")
-                    fail = fail + 1;
                 end
             end
 
         catch
-            fail = 0;
+            successes = 0;
         end
-        successes(i,j) = tries-fail;
+        Tabla(end+1,:) = {sprintf("%ix%i",resolution), ...
+            string(peoples(j)), ...
+            tries, ...
+            successes};
+
         fprintf(" ")
     end
     fprintf("\n")
 end
-%things
 
-
-figure
-%mesh(successes)
-fileID = fopen('data/resolution_vs_people_accuracy.csv','a+');
-%fprintf(fileID, "people, resolution, tries, successes\n");
-for i = 1:length(resolution_multipliers)
-    for j = 1:length(peoples)
-        fprintf(fileID, "%i, %ix%i, %i, %i\n", ...
-            peoples(j), ...
-            resolution_multipliers(i)*img_proportions(1), ...
-            resolution_multipliers(i)*img_proportions(2), ...
-            tries, ...
-            successes(i,j));
-    end
-end
+Tabla;
+update_to_file("data/resolution_vs_people_accuracy.csv",Tabla)
