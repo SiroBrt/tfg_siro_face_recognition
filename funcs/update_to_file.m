@@ -1,7 +1,7 @@
 function update_to_file(file_name,tabla)
 % put keys as string at the beginning, anything else will get combined (added) between the file and the new table
 if isfile(file_name)
-    prev = readtable('data/resolution_vs_people_accuracy.csv');
+    prev = readtable(file_name);
     prev.Properties.VariableTypes = tabla.Properties.VariableTypes;
     
     % identify columns
