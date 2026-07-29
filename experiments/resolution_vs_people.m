@@ -1,11 +1,10 @@
-% Like standard but we reduce resolution until accuracy falls below a
-% certain threshold.
+% We change resolution and amount of peopleto see changes in acc and time
 
 clear;clc;
 
 img_proportions = [3,4];
-resolution_multipliers = 8:10;
-peoples = 26:40;
+resolution_multipliers = 1:10;
+peoples = 2:20;
 tries = 2;
 
 acc_table = table(Size=[0,4],VariableTypes=["string", "string", "double", "double"]);
