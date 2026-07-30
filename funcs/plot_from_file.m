@@ -1,4 +1,4 @@
-function plot_from_file_2(file_name,fixed_vars,fixed_vals,extend)
+function plot_from_file(file_name,fixed_vars,fixed_vals,extend)
 % first arguments are x and y, last 2 are taken as a proportion. Since it is a tensor and we can only plot up to 3d we need to fix variables. if variable fixed is resolution use resolution multiplier instead
 arguments
     file_name
@@ -20,15 +20,15 @@ for i = fixed_vars
     key_correspondance = [key_correspondance find(strcmp(i,names))];
 end
 
-T = addvars(T, rdivide(table2array(T(:,length(names))),table2array(T(:,length(names)-1))),NewVariableNames=["true_z"]);
+T = addvars(T, rdivide(table2array(T(:,length(names))),table2array(T(:,length(names)-1))),NewVariableNames="true_z");
 
 % just in case i decide to change order it's general, but it should be one iteration
 for i = 1:length(names)
     if names{i}=="resolution"
         v1 = split(string(T.resolution),"x");
-        T = addvars(T, str2double(v1(:,1))/3,NewVariableNames=["temp"],After="resolution");
+        T = addvars(T, str2double(v1(:,1))/3,NewVariableNames="temp",After="resolution");
         T = removevars(T,"resolution");
-        T = renamevars(T,"temp","resolution")
+        T = renamevars(T,"temp","resolution");
         break
     end
 end
@@ -63,7 +63,6 @@ if all(size(fixed_vals) == [1 1])
     end
 elseif all(size(fixed_vals) == [1 2])
     % 2d plot
-
     stem(table2array(T(:,1)),T.true_z)
 
 end

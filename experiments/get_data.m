@@ -60,6 +60,6 @@ end
 % add to whatever we had before
 update_to_file("data/test.csv",acc_table);
 
-plot_from_file("data/test.csv",["emotions"], [2u])
+plot_from_file("data/test.csv",["emotions"],[2])
 
 
