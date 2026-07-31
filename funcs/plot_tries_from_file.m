@@ -1,11 +1,10 @@
-function plot_from_file(file_name,fixed_vars,fixed_vals,extend,log_scale)
+function plot_tries_from_file(file_name,fixed_vars,fixed_vals,extend)
 % first arguments are x and y, last 2 are taken as a proportion. Since it is a tensor and we can only plot up to 3d we need to fix variables. if variable fixed is resolution use resolution multiplier instead
 arguments
     file_name
     fixed_vars
     fixed_vals
     extend = true;
-    log_scale = false;
 end
 
 if size(fixed_vars) ~= size(fixed_vals)
@@ -45,7 +44,7 @@ if all(size(fixed_vals) == [1 1])
     % 3d plot
     if extend
         [xq,yq] = meshgrid(min(table2array(T(:,1))):max(table2array(T(:,1))), min(table2array(T(:,2))):max(table2array(T(:,2))));
-        vq = griddata(table2array(T(:,1)),table2array(T(:,2)),T.true_z,xq,yq);
+        vq = griddata(table2array(T(:,1)),table2array(T(:,2)),T.tries,xq,yq);
         grafica = mesh(xq,yq,vq);
         grafica.FaceAlpha = 0.9;
         grafica.FaceColor = "interp";
@@ -56,17 +55,14 @@ if all(size(fixed_vals) == [1 1])
         
         for i = 1:size(T,1)
             temp = T(i,:);
-            M(table2array(temp(1,2)),table2array(temp(1,1))) = temp.true_z;
+            M(table2array(temp(1,2)),table2array(temp(1,1))) = temp.tries;
         end
         grafica = mesh(M);
         grafica.FaceAlpha = 0.9;
         grafica.FaceColor = "flat";
     end
-    if log_scale
-        zscale log
-    end
 elseif all(size(fixed_vals) == [1 2])
     % 2d plot
-    stem(table2array(T(:,1)),T.true_z)
+    stem(table2array(T(:,1)),T.tries)
 
 end
