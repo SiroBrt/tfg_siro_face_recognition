@@ -1,5 +1,5 @@
-function plot_from_file(file_name,fixed_vars,fixed_vals,extend,log_scale)
-% first arguments are x and y, last 2 are taken as a proportion. if variable fixed is resolution use resolution multiplier instead
+function plot_tries_from_file(file_name,fixed_vars,fixed_vals,extend,log_scale)
+% same as plot from file but plots tries instead of last 2 values
 arguments
     file_name
     fixed_vars = [];
@@ -28,7 +28,7 @@ end
 
 T = removevars(T,fixed_vars);
 
-if all(fixed_vals == [])
+if isempty(fixed_vars)
     % 4d plot
 
     dot_size = T.tries;
@@ -47,7 +47,7 @@ elseif all(size(fixed_vals) == [1 1])
     % 3d plot
     if extend
         [xq,yq] = meshgrid(min(table2array(T(:,1))):max(table2array(T(:,1))), min(table2array(T(:,2))):max(table2array(T(:,2))));
-        vq = griddata(table2array(T(:,1)),table2array(T(:,2)),T.true_z,xq,yq);
+        vq = griddata(table2array(T(:,1)),table2array(T(:,2)),T.tries,xq,yq);
         grafica = mesh(xq,yq,vq);
         grafica.FaceAlpha = 0.9;
         grafica.FaceColor = "interp";
@@ -58,7 +58,7 @@ elseif all(size(fixed_vals) == [1 1])
         
         for i = 1:size(T,1)
             temp = T(i,:);
-            M(table2array(temp(1,2)),table2array(temp(1,1))) = temp.true_z;
+            M(table2array(temp(1,2)),table2array(temp(1,1))) = temp.tries;
         end
         grafica = mesh(M);
         grafica.FaceAlpha = 0.9;
@@ -69,6 +69,6 @@ elseif all(size(fixed_vals) == [1 1])
     end
 elseif all(size(fixed_vals) == [1 2])
     % 2d plot
-    stem(table2array(T(:,1)),T.true_z)
+    stem(table2array(T(:,1)),T.tries)
 
 end

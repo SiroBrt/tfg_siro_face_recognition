@@ -1,5 +1,6 @@
 function plot_from_file(file_name,fixed_vars,fixed_vals,extend,log_scale)
-% first arguments are x and y, last 2 are taken as a proportion. if variable fixed is resolution use resolution multiplier instead
+% Last 2 are taken as a proportion. 
+% if resolution is fixed use resolution multiplier instead
 arguments
     file_name
     fixed_vars = [];
@@ -30,7 +31,9 @@ end
 
 T = removevars(T,fixed_vars);
 
-if all(fixed_vals == [])
+disp("checkpoint 1")
+if isempty(fixed_vars)
+    disp("rama 1")
     % 4d plot
 
     dot_size = T.tries;
@@ -50,6 +53,7 @@ if all(fixed_vals == [])
     cb.Label.String = "accuracy";
 
 elseif all(size(fixed_vals) == [1 1])
+    disp("rama 2")
     % 3d plot
     if extend
         [xq,yq] = meshgrid(min(table2array(T(:,1))):max(table2array(T(:,1))), min(table2array(T(:,2))):max(table2array(T(:,2))));
