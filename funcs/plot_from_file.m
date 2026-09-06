@@ -61,6 +61,10 @@ elseif all(size(fixed_vals) == [1 1])
         grafica = mesh(xq,yq,vq);
         grafica.FaceAlpha = 0.9;
         grafica.FaceColor = "interp";
+        vars = T.Properties.VariableNames;
+        xlabel(vars(1))
+        ylabel(vars(2))
+        zlabel("accuracy")
     else
         max_x = max(table2array(T(:,2)));
         max_y = max(table2array(T(:,1)));
@@ -73,6 +77,10 @@ elseif all(size(fixed_vals) == [1 1])
         grafica = mesh(M);
         grafica.FaceAlpha = 0.9;
         grafica.FaceColor = "flat";
+        vars = T.Properties.VariableNames;
+        xlabel(vars(1))
+        ylabel(vars(2))
+        zlabel("accuracy")
     end
     if log_scale
         zscale log
@@ -80,5 +88,8 @@ elseif all(size(fixed_vals) == [1 1])
 elseif all(size(fixed_vals) == [1 2])
     % 2d plot
     stem(table2array(T(:,1)),T.true_z)
+    xlabel(T.Properties.VariableNames(1))
+    ylabel("accuracy")
+
 
 end

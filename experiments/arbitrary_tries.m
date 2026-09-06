@@ -2,8 +2,6 @@ clear;clc;
 
 file_name = "data/accuracy_data.csv";
 
-acc = readtable(file_name);
-
 to_do = table(Size=[0,4],VariableTypes=["double", "double", "double", "double"]);
 to_do.Properties.VariableNames = ["people", "resolution", "emotions", "tries"];
 
